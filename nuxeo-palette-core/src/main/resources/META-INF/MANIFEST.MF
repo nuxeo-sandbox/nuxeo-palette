@@ -1,9 +1,12 @@
-Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .
 Manifest-Version: 1.0
+Bundle-SymbolicName: org.nuxeo.palette
 Bundle-Name: nuxeo-palette-core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-Vendor: Nuxeo
 Bundle-Version: 7.3.qualifier
+Bundle-ClassPath: .
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: nuxeo-palette-core
+Bundle-Vendor: Nuxeo
+Nuxeo-Component: OSGI-INF/extensions/org.nuxeo.palette.schemasContrib.
+ xml,OSGI-INF/extensions/org.nuxeo.palette.GetPaletteItems.xml
+
