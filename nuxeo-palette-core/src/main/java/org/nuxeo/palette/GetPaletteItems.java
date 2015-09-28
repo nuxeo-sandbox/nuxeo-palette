@@ -25,7 +25,6 @@ public class GetPaletteItems extends PaletteActions{
 
     @OperationMethod
     public String run(DocumentModel input) throws JSONException {
-
       return getPaletteItemsForDocument(input);
     }
 

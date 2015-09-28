@@ -4,11 +4,13 @@ function displayItems(gridItemJSONString){
 	for(i=0;i<gridItemJSON.length;i++)
 		{
 			if(gridItemJSON[i].order==0){
-				gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'">'+gridItemJSON[i].id+'</li>');
-				console.log("added"+gridItemJSON[i].id);
+				gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>');
 			}
 		}
-	console.log(gridItemJSON.length);
+}
+
+function notifyServerPaletteChanges(){
+	console.log(gridster.serialize().toJSON());
 }
 
 $(function(){ //DOM Ready
@@ -18,16 +20,21 @@ $(function(){ //DOM Ready
 	        serialize_params: function($w, wgd) {
 	            return {
 	            	id: wgd.el[0].id,
+	            	docId: wgd.el[0].id.replace(parentWidgetId+'_palette_', ''),
 	                col: wgd.col,
 	                row: wgd.row,
-	                sizex:wgd.size_x,
-	               	sizey:wgd.size_y,
+	                sizeX:wgd.size_x,
+	               	sizeY:wgd.size_y,
 	                order: 1 + (wgd.row - 1) * gridster.cols + (wgd.col - 1)
 	            };
+	        },
+	        max_cols:10,
+	        draggable: {
+	        	stop: notifyServerPaletteChanges
 	        }
 	    }).data('gridster');;
 
-	var nxClient = new nuxeo.Client();
+	nxClient = new nuxeo.Client();
 	nxClient.connect(function(error, nxClient) {
 	  if (error) {
 	    // cannot connect
@@ -47,7 +54,7 @@ $(function(){ //DOM Ready
 				displayItems(gritItemJSONString);
 			}
 		});
-	console.log(gridster.serialize().toJSON());
+	
 });
 
 

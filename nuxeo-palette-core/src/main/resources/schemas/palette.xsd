@@ -43,7 +43,7 @@
       <xs:element name="docId" type="xs:string"/>
       <xs:element name="col" type="xs:integer"/>
       <xs:element name="row" type="xs:string"/>
-      <xs:element name="sizex" type="xs:string"/>
+      <xs:element name="sizeX" type="xs:string"/>
       <xs:element name="sizeY" type="xs:string"/>
       <xs:element name="order" type="xs:string"/>
     </xs:sequence>
