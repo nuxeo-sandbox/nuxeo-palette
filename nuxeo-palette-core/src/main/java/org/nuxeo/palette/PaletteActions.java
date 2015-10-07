@@ -1,6 +1,7 @@
 package org.nuxeo.palette;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -28,22 +29,42 @@ public abstract class PaletteActions {
     public static final String DOWNLOAD_THUMBNAIL = "downloadThumbnail";
     public static final String PALETTE_FACET = "palette";
     public static final String PALETTE_XPATH = "palette:items";
-
+    public static final String DOC_ID_PALETTE_FIELD="docId";
 
     protected String getPaletteItemsForDocument(DocumentModel document) throws JSONException{
         CoreSession session = document.getCoreSession();
         DocumentModelList children = session.getChildren(document.getRef());
         JSONArray array = new JSONArray();
+        boolean hasPreviousPalette = document.hasFacet(PALETTE_FACET);
+
+        Property previousPaletteItems=null;
+        Property previousPaletteItem=null;
+        HashMap<String, Integer> itemPropertyPositions=null;
+        if(hasPreviousPalette){
+             previousPaletteItems = document.getProperty(PALETTE_XPATH);
+             itemPropertyPositions = getItemsPropertyPositions(previousPaletteItems);
+        }
 
         for (DocumentModel child : children) {
             JSONObject object = new JSONObject();
             object.put("id", child.getId());
-            object.put("order", "0");
+            if(hasPreviousPalette){
+                previousPaletteItem = previousPaletteItems.get(itemPropertyPositions.get(child.getId()));
+                object.put("order", previousPaletteItem.getValue("order"));
+                object.put("col", previousPaletteItem.getValue("col"));
+                object.put("row", previousPaletteItem.getValue("row"));
+                object.put("sizeY", previousPaletteItem.getValue("sizeY"));
+                object.put("sizeX", previousPaletteItem.getValue("sizeX"));
+            }
+            else {
+                object.put("order", "0");
+            }
             object.put("thumburl", getThumbnailUrl(child));
             array.put(object);
         }
         return array.toString();
     }
+
 
     protected DocumentModel setPaletteItemsForDocument(DocumentModel document, String paletteJSON) throws IOException {
         document.addFacet(PALETTE_FACET);
@@ -53,8 +74,6 @@ public abstract class PaletteActions {
         List<Object> newVals = ComplexTypeJSONDecoder.decodeList(ltype,
                 paletteJSON);
        complexMeta.setValue(newVals);
-
-
         document = document.getCoreSession().saveDocument(document);
         return document;
 
@@ -74,6 +93,15 @@ public abstract class PaletteActions {
                 }
         }
         return url;
+    }
+
+    protected HashMap<String,Integer> getItemsPropertyPositions(Property paletteItems){
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        int i;
+        for(i=0;i<paletteItems.size();i++){
+            map.put((String) paletteItems.get(i).getValue(DOC_ID_PALETTE_FIELD), i);
+        }
+        return map;
     }
 
 }

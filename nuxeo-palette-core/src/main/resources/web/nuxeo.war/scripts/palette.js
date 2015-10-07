@@ -1,16 +1,36 @@
 function displayItems(gridItemJSONString){
 	var gridItemJSON  = jQuery.parseJSON(gridItemJSONString);
 	var i;
+	//We first add the items we have an order first to make sure the news ones are after the first ones.
 	for(i=0;i<gridItemJSON.length;i++)
-		{
-			if(gridItemJSON[i].order==0){
-				gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>');
-			}
+	{
+		if(gridItemJSON[i].order>0){
+			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>',
+					gridItemJSON[i].size_x,gridItemJSON[i].size_y,gridItemJSON[i].col,gridItemJSON[i].row);
 		}
+	}
+	
+	for(i=0;i<gridItemJSON.length;i++)
+	{
+		if(gridItemJSON[i].order==0){
+			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>');
+		}
+	}
 }
 
 function notifyServerPaletteChanges(){
 	console.log(gridster.serialize().toJSON());
+	/*nxClient.operation("Services.SetPaletteItems").input(currentDocumentId).params({
+			paletteJSONString: gridster.serialize().toJSON()
+		 })
+	.execute(function(error,data){
+		if (error) {
+			throw error;
+		}
+		else {
+			console.log("New Value Saved");
+		}
+	});*/
 }
 
 $(function(){ //DOM Ready

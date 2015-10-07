@@ -41,7 +41,7 @@
   <xs:complexType name="palette_itemsType">
     <xs:sequence>
       <xs:element name="docId" type="xs:string"/>
-      <xs:element name="col" type="xs:integer"/>
+      <xs:element name="col" type="xs:string"/>
       <xs:element name="row" type="xs:string"/>
       <xs:element name="sizeX" type="xs:string"/>
       <xs:element name="sizeY" type="xs:string"/>
