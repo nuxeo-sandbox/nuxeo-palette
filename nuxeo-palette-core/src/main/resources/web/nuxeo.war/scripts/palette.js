@@ -19,18 +19,14 @@ function displayItems(gridItemJSONString){
 }
 
 function notifyServerPaletteChanges(){
-	console.log(gridster.serialize().toJSON());
-	/*nxClient.operation("Services.SetPaletteItems").input(currentDocumentId).params({
+	nxClient.operation("Services.SetPaletteItems").input(currentDocumentId).params({
 			paletteJSONString: gridster.serialize().toJSON()
 		 })
 	.execute(function(error,data){
 		if (error) {
 			throw error;
 		}
-		else {
-			console.log("New Value Saved");
-		}
-	});*/
+	});
 }
 
 $(function(){ //DOM Ready

@@ -33,7 +33,8 @@ public abstract class PaletteActions {
 
     protected String getPaletteItemsForDocument(DocumentModel document) throws JSONException{
         CoreSession session = document.getCoreSession();
-        DocumentModelList children = session.getChildren(document.getRef());
+        DocumentModelList children = session.query("Select * from Document where ecm:mixinType != 'HiddenInNavigation' AND ecm:isCheckedInVersion = 0 "
+                + "AND ecm:currentLifeCycleState != 'deleted' and ecm:parentId= '"+document.getId()+"' ORDER BY dc:title");
         JSONArray array = new JSONArray();
         boolean hasPreviousPalette = document.hasFacet(PALETTE_FACET);
 
@@ -48,13 +49,13 @@ public abstract class PaletteActions {
         for (DocumentModel child : children) {
             JSONObject object = new JSONObject();
             object.put("id", child.getId());
-            if(hasPreviousPalette){
+            if(hasPreviousPalette && itemPropertyPositions.containsKey(child.getId())){
                 previousPaletteItem = previousPaletteItems.get(itemPropertyPositions.get(child.getId()));
                 object.put("order", previousPaletteItem.getValue("order"));
                 object.put("col", previousPaletteItem.getValue("col"));
                 object.put("row", previousPaletteItem.getValue("row"));
-                object.put("sizeY", previousPaletteItem.getValue("sizeY"));
-                object.put("sizeX", previousPaletteItem.getValue("sizeX"));
+                object.put("size_y", previousPaletteItem.getValue("sizeY"));
+                object.put("size_x", previousPaletteItem.getValue("sizeX"));
             }
             else {
                 object.put("order", "0");

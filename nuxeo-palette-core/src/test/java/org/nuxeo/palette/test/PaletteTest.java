@@ -9,8 +9,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Before;
@@ -97,7 +95,6 @@ public class PaletteTest extends PaletteActions {
         assertTrue(folder.hasFacet("palette"));
         Property storedPaletteItems = folder.getProperty(PALETTE_XPATH);
         assertTrue(storedPaletteItems.size()==6);
-        HashMap<String, Integer> orderedItems = getItemsPropertyPositions(storedPaletteItems);
 
 
     }

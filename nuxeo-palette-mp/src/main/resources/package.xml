@@ -1,13 +1,13 @@
 <!-- See documentation at http://doc.nuxeo.com/x/HgIz -->
-<package type="addon" name="nuxeo-video-tools"
+<package type="addon" name="nuxeo-palette"
   version="@VERSION@">
   <!-- Give a useful title -->
-  <title>Nuxeo Video Tools</title>
+  <title>Nuxeo palette</title>
   <description>
-    <p>Misc. Tools to Handle Video Files</p>
+    <p>This plugin enables to order content of a folder on a grid.</p>
   </description>
   <!-- your hime page (optionnal) -->
-  <home-page>https://github.com/nuxeo-sandbox/nuxeo-video-tools</home-page>
+  <home-page>https://github.com/fvadon/nuxeo-palette</home-page>
   <vendor>Nuxeo</vendor>
   <installer restart="true" />
   <uninstaller restart="true" />

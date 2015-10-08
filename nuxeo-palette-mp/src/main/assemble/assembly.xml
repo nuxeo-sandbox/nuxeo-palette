@@ -1,4 +1,4 @@
-<project name="video-tools-assembly"
+<project name="nuxeo-palette-assembly"
          default="build"
          xmlns:nx="urn:nuxeo-build"
          xmlns:artifact="urn:nuxeo-artifact">
@@ -27,12 +27,12 @@
     </copy>
 
     <artifact:nuxeo-expand includeTestScope="false"
-                           groupPrefixes="org.nuxeo.video.tools" />
+                           groupPrefixes="org.nuxeo.palette" />
 
     <copy todir="${marketplace}/install/bundles" overwrite="true">
       <artifact:set>
         <includes>
-          <artifact groupId="org.nuxeo.video.tools"
+          <artifact groupId="org.nuxeo.palette"
                     scope="!test"
                     type="!pom" />
         </includes>
