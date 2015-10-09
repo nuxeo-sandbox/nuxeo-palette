@@ -39,7 +39,7 @@ mvn clean install
 
 
 ## Third Party Tools Used
-* gridster.js, dsmorse fork: [http://dsmorse.github.io/gridster.js/](http://dsmorse.github.io/gridster.js/)
+* gridster.js, dsmorse fork: [http://dsmorse.github.io/gridster.js/](http://dsmorse.github.io/gridster.js/). Some modification made to prevent collision where the lib called `root.$` as `$`is Prototype in Nuxeo and not jQuery.
 
 
 ## License

@@ -20,35 +20,39 @@ function displayItems(gridItemJSONString){
 
 function notifyServerPaletteChanges(){
 	nxClient.operation("Services.SetPaletteItems").input(currentDocumentId).params({
-			paletteJSONString: gridster.serialize().toJSON()
+			paletteJSONString: JSON.stringify(Gridster.sort_by_row_and_col_asc(gridster.serialize()))
 		 })
 	.execute(function(error,data){
 		if (error) {
 			throw error;
+		}else{
+			//console.log(JSON.stringify(gridster.serialize()));
 		}
 	});
 }
 
-$(function(){ //DOM Ready
-	gridster= $(".gridster ul").gridster({
+jQuery(function(){ //DOM Ready
+	
+	gridster= jQuery(".gridster ul").gridster({
 	        widget_margins: [10, 10],
 	        widget_base_dimensions: [100, 100],
+	        max_cols:10,
+	        min_cols:10,
 	        serialize_params: function($w, wgd) {
 	            return {
+	            	col: wgd.col,
+	                row: wgd.row,
+	                size_x:wgd.size_x,
+	               	size_y:wgd.size_y,
 	            	id: wgd.el[0].id,
 	            	docId: wgd.el[0].id.replace(parentWidgetId+'_palette_', ''),
-	                col: wgd.col,
-	                row: wgd.row,
-	                sizeX:wgd.size_x,
-	               	sizeY:wgd.size_y,
 	                order: 1 + (wgd.row - 1) * gridster.cols + (wgd.col - 1)
 	            };
 	        },
-	        max_cols:10,
 	        draggable: {
 	        	stop: notifyServerPaletteChanges
 	        }
-	    }).data('gridster');;
+	    }).data('gridster');
 
 	nxClient = new nuxeo.Client();
 	nxClient.connect(function(error, nxClient) {
@@ -68,6 +72,8 @@ $(function(){ //DOM Ready
 			else {
 				gritItemJSONString=data.value;
 				displayItems(gritItemJSONString);
+				//console.log(JSON.stringify(Gridster.sort_by_row_and_col_asc(gridster.serialize())));
+				
 			}
 		});
 	

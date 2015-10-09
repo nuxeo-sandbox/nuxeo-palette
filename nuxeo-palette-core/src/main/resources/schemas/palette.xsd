@@ -43,8 +43,8 @@
       <xs:element name="docId" type="xs:string"/>
       <xs:element name="col" type="xs:string"/>
       <xs:element name="row" type="xs:string"/>
-      <xs:element name="sizeX" type="xs:string"/>
-      <xs:element name="sizeY" type="xs:string"/>
+      <xs:element name="size_x" type="xs:string"/>
+      <xs:element name="size_y" type="xs:string"/>
       <xs:element name="order" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>

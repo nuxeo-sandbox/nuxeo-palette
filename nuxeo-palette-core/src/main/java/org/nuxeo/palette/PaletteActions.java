@@ -51,11 +51,11 @@ public abstract class PaletteActions {
             object.put("id", child.getId());
             if(hasPreviousPalette && itemPropertyPositions.containsKey(child.getId())){
                 previousPaletteItem = previousPaletteItems.get(itemPropertyPositions.get(child.getId()));
-                object.put("order", previousPaletteItem.getValue("order"));
                 object.put("col", previousPaletteItem.getValue("col"));
                 object.put("row", previousPaletteItem.getValue("row"));
-                object.put("size_y", previousPaletteItem.getValue("sizeY"));
-                object.put("size_x", previousPaletteItem.getValue("sizeX"));
+                object.put("size_x", previousPaletteItem.getValue("size_x"));
+                object.put("size_y", previousPaletteItem.getValue("size_y"));
+                object.put("order", previousPaletteItem.getValue("order"));
             }
             else {
                 object.put("order", "0");
