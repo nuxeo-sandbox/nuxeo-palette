@@ -34,7 +34,6 @@ mvn clean install
 * Collection support
 * More control on the grid through widget properties (like columns and row, max size...) that are hardcoded in the js part.
 * Enable a possibility to get the items in the right order.
-* Fix the custom call to jQuery within the widget (it breaks other JQuery plugins deployed before)
 
 
 
