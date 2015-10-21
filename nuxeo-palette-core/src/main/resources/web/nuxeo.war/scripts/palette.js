@@ -75,6 +75,9 @@ jQuery(function(){ //DOM Ready
 			else {
 				gritItemJSONString=data.value;
 				displayItems(gritItemJSONString);
+				console.log(gritItemJSONString);
+				console.log("--");
+				console.log(JSON.stringify(gridster.serialize()));
 				//console.log(JSON.stringify(Gridster.sort_by_row_and_col_asc(gridster.serialize())));
 				
 			}
