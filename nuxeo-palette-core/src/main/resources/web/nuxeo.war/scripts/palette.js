@@ -34,10 +34,10 @@ function notifyServerPaletteChanges(){
 jQuery(function(){ //DOM Ready
 	
 	gridster= jQuery(".gridster ul").gridster({
-	        widget_margins: [10, 10],
-	        widget_base_dimensions: [100, 100],
-	        max_cols:10,
-	        min_cols:10,
+	        widget_margins: [widget_margins_horizontal, widget_margins_vertical],
+	        widget_base_dimensions: [widget_base_dimensions_width, widget_base_dimensions_heigth],
+	        max_cols:widget_max_cols,
+	        min_cols:widget_min_cols,
 	        serialize_params: function($w, wgd) {
 	            return {
 	            	col: wgd.col,

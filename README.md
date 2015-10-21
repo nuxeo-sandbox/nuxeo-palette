@@ -3,8 +3,18 @@ nuxeo-palette
 
 This plugin enables to order content of a folder on a grid.
 ## About 
-The project provides a widget template that will create a grid where to order the thumbnails of a folder content on a grid using drag and drop. 
-The template uses several automation operations to get or set the items of the palettes.
+The project provides a widget template that will create a grid where to order the thumbnails of a folder content on a grid using drag and drop.
+
+The widget template has default properties that can be overridden to control the size and margin of the palette. The properties are:
+
+* margins_horizontal (default: 10)
+* margins_vertical (default: 10) 
+* base_dimensions_width (default: 100)
+* base_dimensions_heigth (default: 100)
+* max_cols (default: 10), for some unknown reason, no value does not seem to work.
+* min_cols (default: 10), for some unknown reason, no value does not seem to work.
+
+The template uses several custom automation operations to get or set the items of the palettes.
 
 -  `Services.GetPaletteItems`operation is the way to get the items, it renders a JSON String containing  document ids with order, position X and Y, and size. An order 0 means it's a new element.
 
@@ -32,9 +42,8 @@ mvn clean install
 
 ## TODO
 * Collection support
-* More control on the grid through widget properties (like columns and row, max size...) that are hardcoded in the js part.
 * Enable a possibility to get the items in the right order.
-* Fix the custom call to jQuery within the widget (it breaks other JQuery plugins deployed before)
+* fix call to nuxeo.js (possible in 7.10)
 
 
 
