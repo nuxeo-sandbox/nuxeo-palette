@@ -35,7 +35,7 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features({ PlatformFeature.class })
-@Deploy({ "org.nuxeo.palette","org.nuxeo.ecm.platform.thumbnail","org.nuxeo.ecm.platform.types.api","org.nuxeo.ecm.platform.types.core"})
+@Deploy({ "org.nuxeo.palette","org.nuxeo.ecm.platform.thumbnail","org.nuxeo.ecm.platform.types.api","org.nuxeo.ecm.platform.types.core","org.nuxeo.ecm.platform.collections.core"})
 //@LocalDeploy({ "nuxeo-thumbnail:thumbnail-default-factories-contrib.xml"})
 public class PaletteTest extends PaletteActions {
     @Inject

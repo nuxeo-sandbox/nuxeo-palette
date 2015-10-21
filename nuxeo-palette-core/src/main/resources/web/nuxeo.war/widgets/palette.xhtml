@@ -16,12 +16,13 @@
 	<script type="text/javascript" charset="utf-8">
 	var currentDocumentId='#{currentDocument.id}';
 	var parentWidgetId='#{widget.id}';
-	var widget_margins_horizontal= #{nxu:test(!empty widgetProperty_margins_horizontal, widgetProperty_margins_horizontal, 10)}; 
-	var widget_margins_vertical = #{nxu:test(!empty widgetProperty_margins_vertical, widgetProperty_margins_vertical, 10)};
-	var widget_base_dimensions_width = #{nxu:test(!empty widgetProperty_base_dimensions_width, widgetProperty_base_dimensions_width, 100)};
-	var widget_base_dimensions_heigth = #{nxu:test(!empty widgetProperty_base_dimensions_heigth, widgetProperty_base_dimensions_heigth, 100)};
-	var widget_max_cols = #{nxu:test(!empty widgetProperty_max_cols, widgetProperty_max_cols, 10)};
-	var widget_min_cols = #{nxu:test(!empty widgetProperty_min_cols, widgetProperty_min_cols, 10)};
+	var palette_margins_horizontal= #{nxu:test(!empty widgetProperty_margins_horizontal, widgetProperty_margins_horizontal, 10)}; 
+	var palette_margins_vertical = #{nxu:test(!empty widgetProperty_margins_vertical, widgetProperty_margins_vertical, 10)};
+	var palette_base_dimensions_width = #{nxu:test(!empty widgetProperty_base_dimensions_width, widgetProperty_base_dimensions_width, 100)};
+	var palette_base_dimensions_heigth = #{nxu:test(!empty widgetProperty_base_dimensions_heigth, widgetProperty_base_dimensions_heigth, 100)};
+	var palette_max_cols = #{nxu:test(!empty widgetProperty_max_cols, widgetProperty_max_cols, 10)};
+	var palette_min_cols = #{nxu:test(!empty widgetProperty_min_cols, widgetProperty_min_cols, 10)};
+	
 	
 	jQuery.noConflict();
 	</script>

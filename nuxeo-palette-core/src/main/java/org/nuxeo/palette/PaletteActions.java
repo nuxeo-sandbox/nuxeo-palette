@@ -34,7 +34,7 @@ public abstract class PaletteActions {
     protected String getPaletteItemsForDocument(DocumentModel document) throws JSONException{
         CoreSession session = document.getCoreSession();
         DocumentModelList children = session.query("Select * from Document where ecm:mixinType != 'HiddenInNavigation' AND ecm:isCheckedInVersion = 0 "
-                + "AND ecm:currentLifeCycleState != 'deleted' and ecm:parentId= '"+document.getId()+"' ORDER BY dc:title");
+                + "AND ecm:currentLifeCycleState != 'deleted' and (ecm:parentId= '"+document.getId()+"' OR collectionMember:collectionIds/* = '"+document.getId()+"') ORDER BY dc:title");
         JSONArray array = new JSONArray();
         boolean hasPreviousPalette = document.hasFacet(PALETTE_FACET);
 

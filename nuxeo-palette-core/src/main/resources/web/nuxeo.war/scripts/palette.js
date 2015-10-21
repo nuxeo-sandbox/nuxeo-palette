@@ -1,19 +1,22 @@
 function displayItems(gridItemJSONString){
 	var gridItemJSON  = jQuery.parseJSON(gridItemJSONString);
+	var paletteItem;
 	var i;
 	//We first add the items we have an order first to make sure the news ones are after the first ones.
 	for(i=0;i<gridItemJSON.length;i++)
-	{
-		if(gridItemJSON[i].order>0){
-			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>',
-					gridItemJSON[i].size_x,gridItemJSON[i].size_y,gridItemJSON[i].col,gridItemJSON[i].row);
+	{	
+		paletteItem = gridItemJSON[i];
+		if(paletteItem.order>0){
+			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+paletteItem.id+'"> <img src="'+paletteItem.thumburl+'" class="paletteThumb"></li>',
+					paletteItem.size_x,paletteItem.size_y,paletteItem.col,paletteItem.row);
 		}
 	}
 	
 	for(i=0;i<gridItemJSON.length;i++)
-	{
-		if(gridItemJSON[i].order==0){
-			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+gridItemJSON[i].id+'"> <img src="'+gridItemJSON[i].thumburl+'" class="paletteThumb"></li>');
+	{	
+		paletteItem = gridItemJSON[i];
+		if(paletteItem.order==0){
+			gridster.add_widget('<li class="gridsterElement" id="'+parentWidgetId+'_palette_'+paletteItem.id+'"> <img src="'+paletteItem.thumburl+'" class="paletteThumb"></li>');
 		}
 	}
 }
@@ -34,10 +37,10 @@ function notifyServerPaletteChanges(){
 jQuery(function(){ //DOM Ready
 	
 	gridster= jQuery(".gridster ul").gridster({
-	        widget_margins: [widget_margins_horizontal, widget_margins_vertical],
-	        widget_base_dimensions: [widget_base_dimensions_width, widget_base_dimensions_heigth],
-	        max_cols:widget_max_cols,
-	        min_cols:widget_min_cols,
+	        widget_margins: [palette_margins_horizontal, palette_margins_vertical],
+	        widget_base_dimensions: [palette_base_dimensions_width, palette_base_dimensions_heigth],
+	        max_cols:palette_max_cols,
+	        min_cols:palette_min_cols,
 	        serialize_params: function($w, wgd) {
 	            return {
 	            	col: wgd.col,
