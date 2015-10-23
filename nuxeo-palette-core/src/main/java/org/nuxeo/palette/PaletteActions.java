@@ -1,6 +1,9 @@
 package org.nuxeo.palette;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,7 +75,41 @@ public abstract class PaletteActions {
             object.put("thumburl", getThumbnailUrl(child));
             array.put(object);
         }
-        return array.toString();
+
+        JSONArray sortedJsonArray = new JSONArray();
+
+        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        for (int i = 0; i < array.length(); i++) {
+            jsonValues.add(array.getJSONObject(i));
+        }
+        Collections.sort( jsonValues, new Comparator<JSONObject>() {
+            //You can change "Name" with "ID" if you want to sort by ID
+            private static final String KEY_NAME = "order";
+
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                int valA=0;
+                int valB=0;
+
+                try {
+                    valA = Integer.parseInt((String) a.get(KEY_NAME));
+                    valB = Integer.parseInt((String)  b.get(KEY_NAME));
+                }
+                catch (JSONException e) {
+                    //do something
+                }
+
+                return (valA-valB);
+                //if you want to change the sort order, simply use the following:
+                //return -valA.compareTo(valB);
+            }
+        });
+
+        for (int i = 0; i < array.length(); i++) {
+            sortedJsonArray.put(jsonValues.get(i));
+        }
+
+        return sortedJsonArray.toString();
     }
 
     protected DocumentModel setPaletteItemsForDocument(DocumentModel document, String paletteJSON) throws IOException {
@@ -117,5 +154,7 @@ public abstract class PaletteActions {
         }
         return map;
     }
+
+
 
 }
