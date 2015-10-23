@@ -44,8 +44,6 @@ mvn clean install
 ## TODO
 * Collection support
 * Enable a possibility to get the items in the right order.
-* fix call to nuxeo.js (possible in 7.10)
-
 
 
 ## Third Party Tools Used
