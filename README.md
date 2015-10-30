@@ -3,7 +3,7 @@ nuxeo-palette
 
 This plugin enables to order content of a folder on a grid.
 ## About 
-The project provides a widget template that will create a grid where to order the thumbnails of a folder content on a grid using drag and drop.
+The project provides a widget template (palette.xhtml) that will create a grid where to order the thumbnails of a folder content on a grid using drag and drop.
 
 The widget template has default properties that can be overridden to control the size and margin of the palette. The properties are:
 
