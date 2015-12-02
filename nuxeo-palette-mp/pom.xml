@@ -6,11 +6,11 @@
   <parent>
     <groupId>org.nuxeo.palette</groupId>
     <artifactId>nuxeo-palette-parent</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>nuxeo-palette-mp</artifactId>
-  <version>7.4-SNAPSHOT</version>
+  <version>7.10-SNAPSHOT</version>
   <packaging>zip</packaging>
   <name>Marketplace package - Nuxeo Palette</name>
 
@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.nuxeo.palette</groupId>
       <artifactId>nuxeo-palette-core</artifactId>
-      <version>7.4-SNAPSHOT</version>
+      <version>7.10-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
