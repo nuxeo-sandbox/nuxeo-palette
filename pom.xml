@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-addons-parent</artifactId>
-    <version>7.10-SNAPSHOT</version>
+    <version>8.2</version>
   </parent>
   <groupId>org.nuxeo.palette</groupId>
   <artifactId>nuxeo-palette-parent</artifactId>
-  <version>7.10-SNAPSHOT</version>
+  <version>1.0.4-SNAPSHOT</version>
   <name>Parent Project for Nuxeo Palette</name>
   <packaging>pom</packaging>
   <description />
@@ -18,7 +18,7 @@
     <module>nuxeo-palette-mp</module>
   </modules>
   <properties>
-    <org.nuxeo.palette.version>7.10-SNAPSHOT</org.nuxeo.palette.version>
+    <org.nuxeo.palette.version>1.0.4-SNAPSHOT</org.nuxeo.palette.version>
   </properties>
   <dependencyManagement>
     <dependencies>
