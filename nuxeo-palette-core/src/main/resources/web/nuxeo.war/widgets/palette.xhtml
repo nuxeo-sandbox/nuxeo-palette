@@ -12,8 +12,16 @@
 	    <ul><!-- Will pe populated automatically -->
 	    </ul>
 	</div>
-		
+	<!--
+	<div class="button" onclick="savePalette();">
+  		Save
+  	</div>
+  	<div class="button" onclick="resetPalette();">
+  		Cancel
+  	</div>
+		-->
 	<script type="text/javascript" charset="utf-8">
+	var nxClient = null;
 	var currentDocumentId='#{currentDocument.id}';
 	var parentWidgetId='#{widget.id}';
 	var palette_margins_horizontal= #{nxu:test(!empty widgetProperty_margins_horizontal, widgetProperty_margins_horizontal, 10)}; 
@@ -22,6 +30,8 @@
 	var palette_base_dimensions_heigth = #{nxu:test(!empty widgetProperty_base_dimensions_heigth, widgetProperty_base_dimensions_heigth, 100)};
 	var palette_max_cols = #{nxu:test(!empty widgetProperty_max_cols, widgetProperty_max_cols, 10)};
 	var palette_min_cols = #{nxu:test(!empty widgetProperty_min_cols, widgetProperty_min_cols, 10)};
+	
+	var customFieldXPath = "#{widgetProperty_docIDsField}";
 	
 	
 	jQuery.noConflict();

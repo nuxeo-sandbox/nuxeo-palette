@@ -1,3 +1,22 @@
+/*
+ * (C) Copyright 2016 Nuxeo SA (http://nuxeo.com/) and others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *     Frédéric Vadon
+ *     Thibaud Arguillere
+ */
 package org.nuxeo.palette;
 
 import java.io.IOException;
@@ -7,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +35,7 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.model.Property;
 import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
 import org.nuxeo.ecm.core.event.Event;
@@ -42,27 +63,28 @@ public abstract class PaletteActions {
 
     public static final String PALETTE_ORDER_CHANGED_EVENT = "PaletteOrderChanged";
 
-    protected String getPaletteItemsForDocument(DocumentModel document) throws JSONException {
-        CoreSession session = document.getCoreSession();
-        DocumentModelList children = session.query("Select * from Document where ecm:mixinType != 'HiddenInNavigation' AND ecm:isCheckedInVersion = 0 "
-                + "AND ecm:currentLifeCycleState != 'deleted' and (ecm:parentId= '"
-                + document.getId()
-                + "' OR collectionMember:collectionIds/* = '" + document.getId() + "') ORDER BY dc:title");
+    /*
+     * This is the main method that builds the JSON string with the children.
+     */
+    protected String buildPaletteItemsForDocument(DocumentModel mainDoc,
+            DocumentModelList documents) throws JSONException {
+
         JSONArray array = new JSONArray();
-        boolean hasPreviousPalette = document.hasFacet(PALETTE_FACET);
+        boolean hasPreviousPalette = mainDoc.hasFacet(PALETTE_FACET);
 
         Property previousPaletteItems = null;
         Property previousPaletteItem = null;
         HashMap<String, Integer> itemPropertyPositions = null;
         if (hasPreviousPalette) {
-            previousPaletteItems = document.getProperty(PALETTE_XPATH);
+            previousPaletteItems = mainDoc.getProperty(PALETTE_XPATH);
             itemPropertyPositions = getItemsPropertyPositions(previousPaletteItems);
         }
 
-        for (DocumentModel child : children) {
+        for (DocumentModel child : documents) {
             JSONObject object = new JSONObject();
             object.put("id", child.getId());
-            if (hasPreviousPalette && itemPropertyPositions.containsKey(child.getId())) {
+            if (hasPreviousPalette
+                    && itemPropertyPositions.containsKey(child.getId())) {
                 previousPaletteItem = previousPaletteItems.get(itemPropertyPositions.get(child.getId()));
                 object.put("col", previousPaletteItem.getValue("col"));
                 object.put("row", previousPaletteItem.getValue("row"));
@@ -82,26 +104,26 @@ public abstract class PaletteActions {
         for (int i = 0; i < array.length(); i++) {
             jsonValues.add(array.getJSONObject(i));
         }
-        Collections.sort( jsonValues, new Comparator<JSONObject>() {
-            //You can change "Name" with "ID" if you want to sort by ID
+        Collections.sort(jsonValues, new Comparator<JSONObject>() {
+            // You can change "Name" with "ID" if you want to sort by ID
             private static final String KEY_NAME = "order";
 
             @Override
             public int compare(JSONObject a, JSONObject b) {
-                int valA=0;
-                int valB=0;
+                int valA = 0;
+                int valB = 0;
 
                 try {
                     valA = Integer.parseInt((String) a.get(KEY_NAME));
-                    valB = Integer.parseInt((String)  b.get(KEY_NAME));
-                }
-                catch (JSONException e) {
-                    //do something
+                    valB = Integer.parseInt((String) b.get(KEY_NAME));
+                } catch (JSONException e) {
+                    // do something
                 }
 
-                return (valA-valB);
-                //if you want to change the sort order, simply use the following:
-                //return -valA.compareTo(valB);
+                return (valA - valB);
+                // if you want to change the sort order, simply use the
+                // following:
+                // return -valA.compareTo(valB);
             }
         });
 
@@ -110,19 +132,70 @@ public abstract class PaletteActions {
         }
 
         return sortedJsonArray.toString();
+
     }
 
-    protected DocumentModel setPaletteItemsForDocument(DocumentModel document, String paletteJSON) throws IOException {
+    protected String getPaletteItemsForDocument(DocumentModel document)
+            throws JSONException {
+        return getPaletteItemsForDocument(document, null);
+    }
+
+    /*
+     * Handling compatibility with version< <= 1.0.4, where there were no xpath
+     * parameter, we used only a Folderish or a collection. New version accepts
+     * a String field (multivalued, storing document IDs) as parameter
+     */
+    protected String getPaletteItemsForDocument(DocumentModel document,
+            String xpath) throws JSONException {
+
+        CoreSession session = document.getCoreSession();
+        DocumentModelList children;
+
+        if (StringUtils.isBlank(xpath)) {
+            children = session.query("SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:isCheckedInVersion = 0 "
+                    + "AND ecm:currentLifeCycleState != 'deleted' AND (ecm:parentId= '"
+                    + document.getId()
+                    + "' OR collectionMember:collectionIds/* = '"
+                    + document.getId() + "') ORDER BY dc:title");
+        } else {
+            String[] uuids = (String[]) document.getPropertyValue(xpath);
+            if (uuids == null || uuids.length == 0) {
+                children = new DocumentModelListImpl();
+            } else {
+                StringBuffer sb = new StringBuffer(
+                        "SELECT * FROM Document WHERE ecm:uuid IN (");
+                boolean first = true;
+                for (String uid : uuids) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        sb.append(",");
+                    }
+                    sb.append("'" + uid + "'");
+                }
+                sb.append(") ORDER BY dc:title");
+                children = session.query(sb.toString());
+
+            }
+        }
+
+        return buildPaletteItemsForDocument(document, children);
+    }
+
+    protected DocumentModel setPaletteItemsForDocument(DocumentModel document,
+            String paletteJSON) throws IOException {
         document.addFacet(PALETTE_FACET);
         Property complexMeta = document.getProperty(PALETTE_XPATH);
         ListType ltype = (ListType) complexMeta.getField().getType();
 
-        List<Object> newVals = ComplexTypeJSONDecoder.decodeList(ltype, paletteJSON);
+        List<Object> newVals = ComplexTypeJSONDecoder.decodeList(ltype,
+                paletteJSON);
         complexMeta.setValue(newVals);
         document = document.getCoreSession().saveDocument(document);
         // send event
         CoreSession session = document.getCoreSession();
-        EventContextImpl evctx = new DocumentEventContext(session, session.getPrincipal(), document);
+        EventContextImpl evctx = new DocumentEventContext(session,
+                session.getPrincipal(), document);
         Event event = evctx.newEvent(PALETTE_ORDER_CHANGED_EVENT);
         EventService eventService = Framework.getLocalService(EventService.class);
         eventService.fireEvent(event);
@@ -139,22 +212,23 @@ public abstract class PaletteActions {
             thumbnail = thumbnailAdapter.getThumbnail(document.getCoreSession());
 
             if (thumbnail != null) {
-                url = DocumentModelFunctions.fileUrl(Framework.getProperty("nuxeo.url"), DOWNLOAD_THUMBNAIL, document,
-                        THUMB_THUMBNAIL, thumbnail.getFilename());
+                url = DocumentModelFunctions.fileUrl(
+                        Framework.getProperty("nuxeo.url"), DOWNLOAD_THUMBNAIL,
+                        document, THUMB_THUMBNAIL, thumbnail.getFilename());
             }
         }
         return url;
     }
 
-    protected HashMap<String, Integer> getItemsPropertyPositions(Property paletteItems) {
+    protected HashMap<String, Integer> getItemsPropertyPositions(
+            Property paletteItems) {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         int i;
         for (i = 0; i < paletteItems.size(); i++) {
-            map.put((String) paletteItems.get(i).getValue(DOC_ID_PALETTE_FIELD), i);
+            map.put((String) paletteItems.get(i).getValue(DOC_ID_PALETTE_FIELD),
+                    i);
         }
         return map;
     }
-
-
 
 }
