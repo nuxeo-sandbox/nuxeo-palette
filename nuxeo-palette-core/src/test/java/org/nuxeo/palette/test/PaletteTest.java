@@ -102,6 +102,7 @@ public class PaletteTest extends PaletteActions {
         Property storedPaletteItems = folder.getProperty(PALETTE_XPATH);
         assertTrue(storedPaletteItems.size() == 6);
 
+        // Remove the second one
         folder = removePaletteItemForDocument(folder, "faaa64ee-5148-47b0-9237-3d8f825420f8", true);
         ArrayList<Map<String, Serializable>> complexValues = (ArrayList<Map<String, Serializable>>) folder.getPropertyValue(PALETTE_XPATH);
         assertEquals(5, complexValues.size());

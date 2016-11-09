@@ -27,7 +27,7 @@ import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
-@Operation(id = RemovePaletteItem.ID, category = Constants.CAT_SERVICES, label = "Remove Palette Item", description = "Remove the item given either its document ID.")
+@Operation(id = RemovePaletteItem.ID, category = Constants.CAT_SERVICES, label = "Remove Palette Item", description = "Remove the item given its document ID.")
 public class RemovePaletteItem extends PaletteActions {
 
     @Context

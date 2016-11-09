@@ -228,23 +228,10 @@ public abstract class PaletteActions {
                 // Reset order numbers
                 if(found) {
                     int index = 0;
-                    int orderValue;
-                    String orderStr;
 
                     for (Map<String, Serializable> oneEntry : complexValues) {
-                        try {
-                            orderStr = (String) oneEntry.get(ORDER_PALETTE_FIELD);
-                            orderValue = Integer.parseInt(orderStr);
-                            if(orderValue > 0) {
-                                index += 1;
-                                orderValue = index;
-                            } else {
-                                orderValue = 0;
-                            }
-                        } catch (NumberFormatException e) {
-                            orderValue = 0;
-                        }
-                        oneEntry.put(ORDER_PALETTE_FIELD, "" + orderValue);
+                        index += 1;
+                        oneEntry.put(ORDER_PALETTE_FIELD, "" + index);
                     }
 
                     document.setPropertyValue(PALETTE_XPATH, complexValues);
