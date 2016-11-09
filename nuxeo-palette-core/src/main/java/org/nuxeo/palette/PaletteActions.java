@@ -20,11 +20,13 @@
 package org.nuxeo.palette;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
@@ -60,6 +62,8 @@ public abstract class PaletteActions {
     public static final String PALETTE_XPATH = "palette:items";
 
     public static final String DOC_ID_PALETTE_FIELD = "docId";
+
+    public static final String ORDER_PALETTE_FIELD = "order";
 
     public static final String PALETTE_ORDER_CHANGED_EVENT = "PaletteOrderChanged";
 
@@ -202,6 +206,57 @@ public abstract class PaletteActions {
 
         return document;
 
+    }
+
+    protected DocumentModel removePaletteItemForDocument(
+            DocumentModel document, String docId, boolean saveDoc) {
+
+        if (StringUtils.isNotBlank(docId)) {
+            @SuppressWarnings("unchecked")
+            ArrayList<Map<String, Serializable>> complexValues = (ArrayList<Map<String, Serializable>>) document.getPropertyValue(PALETTE_XPATH);
+            if (complexValues != null && complexValues.size() > 0) {
+                boolean found = false;
+                for (Map<String, Serializable> oneEntry : complexValues) {
+                    String id = (String) oneEntry.get(DOC_ID_PALETTE_FIELD);
+                    if (StringUtils.isNotBlank(id) && id.equals(docId)) {
+                        complexValues.remove(oneEntry);
+                        found = true;
+                        break;
+                    }
+                }
+
+                // Reset order numbers
+                if(found) {
+                    int index = 0;
+                    int orderValue;
+                    String orderStr;
+
+                    for (Map<String, Serializable> oneEntry : complexValues) {
+                        try {
+                            orderStr = (String) oneEntry.get(ORDER_PALETTE_FIELD);
+                            orderValue = Integer.parseInt(orderStr);
+                            if(orderValue > 0) {
+                                index += 1;
+                                orderValue = index;
+                            } else {
+                                orderValue = 0;
+                            }
+                        } catch (NumberFormatException e) {
+                            orderValue = 0;
+                        }
+                        oneEntry.put(ORDER_PALETTE_FIELD, "" + orderValue);
+                    }
+
+                    document.setPropertyValue(PALETTE_XPATH, complexValues);
+                    if (saveDoc) {
+                        document = document.getCoreSession().saveDocument(
+                                document);
+                    }
+                }
+            }
+        }
+
+        return document;
     }
 
     private String getThumbnailUrl(DocumentModel document) {

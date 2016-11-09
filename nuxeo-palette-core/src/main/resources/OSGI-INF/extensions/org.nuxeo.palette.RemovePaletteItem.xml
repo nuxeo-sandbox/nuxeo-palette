@@ -1,0 +1,8 @@
+<component name="org.nuxeo.palette.RemovePaletteItem">
+
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
+    point="operations" >
+      <operation class="org.nuxeo.palette.RemovePaletteItem" />
+   </extension>
+    
+</component>
