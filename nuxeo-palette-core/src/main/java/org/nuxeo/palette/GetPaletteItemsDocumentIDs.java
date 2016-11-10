@@ -32,7 +32,7 @@ public class GetPaletteItemsDocumentIDs extends PaletteActions {
     @Context
     protected CoreSession coreSession;
 
-    public static final String ID = "Services.RemovePaletteItem";
+    public static final String ID = "Services.GetPaletteItemsDocumentIDs";
 
     @OperationMethod
     public String run(DocumentModel input) throws JSONException {
