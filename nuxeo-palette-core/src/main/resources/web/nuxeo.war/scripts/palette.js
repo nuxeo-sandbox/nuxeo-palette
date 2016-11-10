@@ -1,9 +1,30 @@
 function displayItems(gridItemJSONString) {
     var gridItemJSON = jQuery.parseJSON(gridItemJSONString);
-    var paletteItem;
-    var i;
+    var paletteItem, i, lastRow, colNumber;
+
+    debugger;
 
     gridster.remove_all_widgets();
+
+    // Realign column numbers (can have holes when items are removed)
+    lastRow = ""; // Saved as string
+    colNumber = 0;
+    for (i = 0; i < gridItemJSON.length; i++) {
+        paletteItem = gridItemJSON[i];
+        if (paletteItem.order > 0) {
+            if (lastRow === "") {
+                lastRow = paletteItem.row;
+                colNumber = 1;
+            } else if (lastRow !== paletteItem.row) {
+                lastRow = paletteItem.row;
+                colNumber = 1;
+            } else {
+                colNumber += 1;
+            }
+
+            paletteItem.col = "" + colNumber;
+        }
+    }
 
     // We first add the items we have an order first to make sure the news ones are after the first ones.
     for (i = 0; i < gridItemJSON.length; i++) {
