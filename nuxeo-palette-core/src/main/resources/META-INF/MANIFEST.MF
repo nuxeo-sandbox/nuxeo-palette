@@ -8,7 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ManifestVersion: 2
 Bundle-Vendor: Nuxeo
 Nuxeo-Component: OSGI-INF/extensions/org.nuxeo.palette.schemasContrib.
- xml,OSGI-INF/extensions/org.nuxeo.palette.GetPaletteItems.xml,OSGI-IN
- F/extensions/org.nuxeo.palette.SetPaletteItems.xml,OSGI-INF/extension
- s/org.nuxeo.palette.RemovePaletteItem.xml
+ xml,OSGI-INF/org.nuxeo.palette.operations.xml
 

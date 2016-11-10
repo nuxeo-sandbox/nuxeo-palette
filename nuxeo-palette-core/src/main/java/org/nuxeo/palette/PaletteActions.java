@@ -186,6 +186,39 @@ public abstract class PaletteActions {
         return buildPaletteItemsForDocument(document, children);
     }
 
+    /*
+     * Return a JSON String of an array or document IDs Uses the palette:items
+     * schema
+     *
+     * The array is easy to build, we don't pay the overhead of using a JSON
+     * builder
+     */
+    protected String getPaletteItemsDocumentIDs(DocumentModel document) {
+
+        String json = "[";
+
+        if (document.hasFacet(PALETTE_FACET)) {
+            @SuppressWarnings("unchecked")
+            ArrayList<Map<String, Serializable>> complexValues = (ArrayList<Map<String, Serializable>>) document.getPropertyValue(PALETTE_XPATH);
+            if (complexValues != null && complexValues.size() > 0) {
+                boolean isFirst = true;
+                for (Map<String, Serializable> oneEntry : complexValues) {
+                    String id = (String) oneEntry.get(DOC_ID_PALETTE_FIELD);
+                    if (isFirst) {
+                        json += "\"" + id + "\"";
+                        isFirst = false;
+                    } else {
+                        json += ",\"" + id + "\"";
+                    }
+                }
+            }
+        }
+
+        json += "]";
+
+        return json;
+    }
+
     protected DocumentModel setPaletteItemsForDocument(DocumentModel document,
             String paletteJSON) throws IOException {
         document.addFacet(PALETTE_FACET);
@@ -226,7 +259,7 @@ public abstract class PaletteActions {
                 }
 
                 // Reset order numbers
-                if(found) {
+                if (found) {
                     int index = 0;
 
                     for (Map<String, Serializable> oneEntry : complexValues) {

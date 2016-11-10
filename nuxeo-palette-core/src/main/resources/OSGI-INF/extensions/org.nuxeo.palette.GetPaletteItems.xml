@@ -1,8 +1,0 @@
-<component name="org.nuxeo.palette.GetPaletteItems">
-
-  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
-    point="operations" >
-      <operation class="org.nuxeo.palette.GetPaletteItems" />
-   </extension>
-    
-</component>

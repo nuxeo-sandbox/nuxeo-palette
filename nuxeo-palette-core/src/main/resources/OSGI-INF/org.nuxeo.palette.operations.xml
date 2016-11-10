@@ -1,0 +1,11 @@
+<component name="org.nuxeo.palette.operations">
+
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
+    point="operations" >
+      <operation class="org.nuxeo.palette.GetPaletteItems" />
+      <operation class="org.nuxeo.palette.RemovePaletteItem" />
+      <operation class="org.nuxeo.palette.SetPaletteItems" />
+      <operation class="org.nuxeo.palette.GetPaletteItemsDocumentIDs" />
+  </extension>
+    
+</component>
