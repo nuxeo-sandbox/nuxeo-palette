@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.palette.schema">
+
+	<extension target="org.nuxeo.ecm.core.schema.TypeService"
+		point="schema">
+		<schema name="palette" src="schemas/palette.xsd" />
+	</extension>
+	
+	<extension point="doctype" target="org.nuxeo.ecm.core.schema.TypeService">
+    	<facet name="palette">
+        	<schema name="palette" />
+    	</facet>
+	</extension>
+
+
+
+</component>
