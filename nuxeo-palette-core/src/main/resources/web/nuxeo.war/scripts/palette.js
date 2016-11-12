@@ -2,8 +2,6 @@ function displayItems(gridItemJSONString) {
     var gridItemJSON = jQuery.parseJSON(gridItemJSONString);
     var paletteItem, i, lastRow, colNumber;
 
-    debugger;
-
     gridster.remove_all_widgets();
 
     // Realign column numbers (can have holes when items are removed)
